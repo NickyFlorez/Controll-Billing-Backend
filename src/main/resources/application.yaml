@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: controlBilling
+  datasource:
+    url: jdbc:postgresql://localhost:5432/controlbilling
+    username: postgres
+    password: admin123
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+
+server:
+  servlet:
+    context-path: '/controlBilling/api/v1'
+
+jwt:
+  secret: 'ULTRA SUPER MEGA KEY'

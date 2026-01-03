@@ -1,0 +1,13 @@
+package com.nicky.controlBilling;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class ControlBillingApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(ControlBillingApplication.class, args);
+	}
+
+}

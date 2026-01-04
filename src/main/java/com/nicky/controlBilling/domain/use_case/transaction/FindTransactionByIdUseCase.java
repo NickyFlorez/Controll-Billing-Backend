@@ -1,9 +1,9 @@
 package com.nicky.controlBilling.domain.use_case.transaction;
 
+import com.nicky.controlBilling.domain.exceptions.TransactionNotFoundException;
 import com.nicky.controlBilling.domain.model.Transaction;
 import com.nicky.controlBilling.domain.port.transaction.TransactionPort;
 
-import java.util.Optional;
 import java.util.UUID;
 
 public class FindTransactionByIdUseCase {
@@ -14,7 +14,7 @@ public class FindTransactionByIdUseCase {
         this.transactionPort = transactionPort;
     }
 
-    public Optional<Transaction> execute(UUID id){
-        return this.transactionPort.findTransactionsById(id);
+    public Transaction execute(UUID id) {
+        return this.transactionPort.findTransactionsById(id).orElseThrow(() -> new TransactionNotFoundException("Transaction not found"));
     }
 }

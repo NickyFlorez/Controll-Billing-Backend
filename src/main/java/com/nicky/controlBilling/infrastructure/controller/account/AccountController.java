@@ -7,6 +7,8 @@ import com.nicky.controlBilling.domain.use_case.account.FindAccountByIdUseCase;
 import com.nicky.controlBilling.domain.use_case.account.FindAccountsByFilterUseCase;
 import com.nicky.controlBilling.domain.use_case.account.SaveAccountUseCase;
 import com.nicky.controlBilling.infrastructure.controller.dto.request.CreateAccountDto;
+import com.nicky.controlBilling.infrastructure.controller.dto.response.AccountResponse;
+import com.nicky.controlBilling.infrastructure.controller.dto.response.ApiResponse;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.http.HttpStatus;
@@ -27,7 +29,7 @@ public class AccountController {
     private final SaveAccountUseCase saveAccountUseCase;
 
     @GetMapping
-    public ResponseEntity<@NonNull List<Account>> find(
+    public ResponseEntity<@NonNull ApiResponse> find(
             @RequestParam UUID userId,
             @RequestParam(required = false) String bank
     ){
@@ -38,17 +40,35 @@ public class AccountController {
 
         List<Account> accounts = this.findAccountsByFilterUseCase.execute(accountFilter);
 
-        return ResponseEntity.status(HttpStatus.OK).body(accounts);
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ApiResponse(
+                        HttpStatus.OK.name(),
+                        accounts.stream().map(
+                                AccountResponse::toResponse
+                        ),
+                        "Find Accounts filtered"
+                )
+        );
     }
 
     @GetMapping("/{accountId}")
-    public ResponseEntity<@NonNull Account> findById(@PathVariable UUID accountId){
-        return ResponseEntity.status(HttpStatus.OK).body(this.findAccountByIdUseCase.execute(accountId));
+    public ResponseEntity<@NonNull ApiResponse> findById(@PathVariable UUID accountId) {
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse(
+                HttpStatus.OK.name(),
+                AccountResponse.toResponse(this.findAccountByIdUseCase.execute(accountId)),
+                "Find account By id"
+        ));
     }
 
     @PostMapping
-    public ResponseEntity<@NonNull Account> saveAccount(@RequestBody CreateAccountDto account){
-        return ResponseEntity.status(HttpStatus.CREATED).body(this.saveAccountUseCase.execute(mapCreateToDomain(account)));
+    public ResponseEntity<@NonNull ApiResponse> saveAccount(@RequestBody CreateAccountDto account) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                new ApiResponse(
+                        HttpStatus.OK.name(),
+                        AccountResponse.toResponse(this.saveAccountUseCase.execute(mapCreateToDomain(account))),
+                        "Save account"
+                )
+        );
     }
 
     private Account mapCreateToDomain(CreateAccountDto dto){

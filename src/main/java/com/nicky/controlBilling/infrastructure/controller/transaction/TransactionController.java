@@ -6,6 +6,7 @@ import com.nicky.controlBilling.domain.use_case.transaction.*;
 import com.nicky.controlBilling.infrastructure.controller.dto.CreateTransactionDto;
 import com.nicky.controlBilling.infrastructure.controller.dto.TransactionDto;
 import lombok.AllArgsConstructor;
+import lombok.NonNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,12 +26,12 @@ public class TransactionController {
     private final FindByFilterUseCase findByFilterUseCase;
 
     @GetMapping("/{incomeId}")
-    public ResponseEntity<TransactionDto> findById(@PathVariable UUID incomeId) {
+    public ResponseEntity<@NonNull TransactionDto> findById(@PathVariable UUID incomeId) {
         return ResponseEntity.status(HttpStatus.OK).body(TransactionDto.fromDomain(this.findTransactionByIdUseCase.execute(incomeId).orElseThrow(() -> new TransactionNotFoundException("Transaction not found"))));
     }
 
     @GetMapping
-    public ResponseEntity<List<TransactionDto>> find(
+    public ResponseEntity<@NonNull List<TransactionDto>> find(
             @RequestParam UUID userId,
             @RequestParam(required = false) TransactionType type,
             @RequestParam(required = false) Month month
@@ -52,7 +53,7 @@ public class TransactionController {
     }
 
     @PostMapping
-    public ResponseEntity<TransactionDto> saveIncome(@RequestBody CreateTransactionDto income) {
+    public ResponseEntity<@NonNull TransactionDto> saveIncome(@RequestBody CreateTransactionDto income) {
         Transaction transactionToSave = this.mapCreateDtoToDomain(income);
         return ResponseEntity.status(HttpStatus.CREATED).body(TransactionDto.fromDomain(this.saveTransactionUseCase.execute(transactionToSave)));
     }

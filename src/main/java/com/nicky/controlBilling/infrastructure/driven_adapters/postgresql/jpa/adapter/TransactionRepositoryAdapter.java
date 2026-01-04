@@ -6,6 +6,7 @@ import com.nicky.controlBilling.domain.port.transaction.TransactionPort;
 import com.nicky.controlBilling.infrastructure.driven_adapters.postgresql.jpa.entity.TransactionDbo;
 import com.nicky.controlBilling.infrastructure.driven_adapters.postgresql.jpa.repository.TransactionRepositoryJpa;
 import lombok.AllArgsConstructor;
+import lombok.NonNull;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +33,7 @@ public class TransactionRepositoryAdapter implements TransactionPort {
     @Override
     public List<Transaction> findTransactionsByFilter(TransactionFilter filter) {
 
-        Specification<TransactionDbo> spec = Specification
+        Specification<@NonNull TransactionDbo> spec = Specification
                 .where(TransactionJpaSpecifications.byUserId(filter.userId()))
                 .and(TransactionJpaSpecifications.byType(filter.type()))
                 .and(TransactionJpaSpecifications.byMonth(filter.month()));

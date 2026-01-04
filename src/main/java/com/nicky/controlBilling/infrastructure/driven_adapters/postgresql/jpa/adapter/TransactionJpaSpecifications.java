@@ -22,7 +22,7 @@ public class TransactionJpaSpecifications {
                 type == null ? null : cb.equal(root.get("type"), type);
     }
 
-    static Specification<TransactionDbo> byMonth(Month month) {
+    static Specification<@NonNull TransactionDbo> byMonth(Month month) {
         return (root, query, cb) -> {
             if (month == null) return null;
 

@@ -7,6 +7,7 @@ import com.nicky.controlBilling.domain.use_case.transaction.SaveTransactionUseCa
 import com.nicky.controlBilling.infrastructure.controller.dto.request.CreateTransactionDto;
 import com.nicky.controlBilling.infrastructure.controller.dto.response.ApiResponse;
 import com.nicky.controlBilling.infrastructure.controller.dto.response.TransactionResponse;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.http.HttpStatus;
@@ -65,7 +66,7 @@ public class TransactionController {
     }
 
     @PostMapping
-    public ResponseEntity<@NonNull ApiResponse> saveIncome(@RequestBody CreateTransactionDto income) {
+    public ResponseEntity<@NonNull ApiResponse> saveIncome(@Valid @RequestBody CreateTransactionDto income) {
         Transaction transactionToSave = this.mapCreateDtoToDomain(income);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(new ApiResponse(

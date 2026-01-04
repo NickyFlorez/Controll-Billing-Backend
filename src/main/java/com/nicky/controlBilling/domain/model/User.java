@@ -9,6 +9,7 @@ public record User(
         String email,
         String password,
         Role role,
-        List<Transaction> transactions
+        List<Transaction> transactions,
+        List<Account> accounts
 ) {
 }

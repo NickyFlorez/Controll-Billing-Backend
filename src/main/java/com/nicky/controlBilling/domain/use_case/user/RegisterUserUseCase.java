@@ -30,7 +30,7 @@ public class RegisterUserUseCase {
         String encryptedPassword = this.securityPort.encryptPassword(password);
 
         return this.userPort.save(
-                new User(null, fullName, email, encryptedPassword, role, new ArrayList<>())
+                new User(null, fullName, email, encryptedPassword, role, new ArrayList<>(), new ArrayList<>())
         );
     }
 }

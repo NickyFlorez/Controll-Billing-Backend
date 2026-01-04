@@ -1,4 +1,4 @@
-package com.nicky.controlBilling.infrastructure.controller.dto;
+package com.nicky.controlBilling.infrastructure.controller.dto.request;
 
 import com.nicky.controlBilling.domain.model.Month;
 import com.nicky.controlBilling.domain.model.TransactionType;
@@ -12,6 +12,7 @@ public record CreateTransactionDto(
         BigDecimal value,
         Month month,
         TransactionType type,
-        UUID userId
+        UUID userId,
+        UUID accountId
 ) {
 }

@@ -1,9 +1,6 @@
 package com.nicky.controlBilling.application.config;
 
-import com.nicky.controlBilling.domain.use_case.transaction.FindAllTransactionsByUserIdUseCase;
-import com.nicky.controlBilling.domain.use_case.transaction.FindTransactionByIdUseCase;
-import com.nicky.controlBilling.domain.use_case.transaction.FindTransactionsByTypeUseCase;
-import com.nicky.controlBilling.domain.use_case.transaction.SaveTransactionUseCase;
+import com.nicky.controlBilling.domain.use_case.transaction.*;
 import com.nicky.controlBilling.infrastructure.driven_adapters.postgresql.jpa.adapter.TransactionRepositoryAdapter;
 import com.nicky.controlBilling.infrastructure.driven_adapters.postgresql.jpa.adapter.UserRepositoryAdapter;
 import org.springframework.context.annotation.Bean;
@@ -11,13 +8,6 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class TransactionUseCaseBeanConfig {
-
-    @Bean
-    FindAllTransactionsByUserIdUseCase findAllTransactionsByUserIdUseCase(UserRepositoryAdapter userRepositoryAdapter,
-                                                                          TransactionRepositoryAdapter transactionRepositoryAdapter){
-        return new FindAllTransactionsByUserIdUseCase(transactionRepositoryAdapter, userRepositoryAdapter);
-    }
-
     @Bean
     FindTransactionByIdUseCase findTransactionByIdUseCase(TransactionRepositoryAdapter transactionRepositoryAdapter){
         return new FindTransactionByIdUseCase(transactionRepositoryAdapter);
@@ -29,7 +19,7 @@ public class TransactionUseCaseBeanConfig {
     }
 
     @Bean
-    FindTransactionsByTypeUseCase findTransactionsByTypeUseCase(TransactionRepositoryAdapter transactionRepositoryAdapter){
-        return new FindTransactionsByTypeUseCase(transactionRepositoryAdapter);
+    FindByFilterUseCase findByFilterUseCase(TransactionRepositoryAdapter transactionRepositoryAdapter){
+        return new FindByFilterUseCase(transactionRepositoryAdapter);
     }
 }

@@ -1,13 +1,8 @@
 package com.nicky.controlBilling.infrastructure.controller.transaction;
 
 import com.nicky.controlBilling.domain.exceptions.TransactionNotFoundException;
-import com.nicky.controlBilling.domain.model.Transaction;
-import com.nicky.controlBilling.domain.model.TransactionType;
-import com.nicky.controlBilling.domain.model.User;
-import com.nicky.controlBilling.domain.use_case.transaction.FindAllTransactionsByUserIdUseCase;
-import com.nicky.controlBilling.domain.use_case.transaction.FindTransactionByIdUseCase;
-import com.nicky.controlBilling.domain.use_case.transaction.FindTransactionsByTypeUseCase;
-import com.nicky.controlBilling.domain.use_case.transaction.SaveTransactionUseCase;
+import com.nicky.controlBilling.domain.model.*;
+import com.nicky.controlBilling.domain.use_case.transaction.*;
 import com.nicky.controlBilling.infrastructure.controller.dto.CreateTransactionDto;
 import com.nicky.controlBilling.infrastructure.controller.dto.TransactionDto;
 import lombok.AllArgsConstructor;
@@ -26,23 +21,34 @@ import java.util.UUID;
 public class TransactionController {
 
     private final FindTransactionByIdUseCase findTransactionByIdUseCase;
-    private final FindAllTransactionsByUserIdUseCase findAllTransactionsByUserIdUseCase;
     private final SaveTransactionUseCase saveTransactionUseCase;
-    private final FindTransactionsByTypeUseCase findTransactionsByTypeUseCase;
+    private final FindByFilterUseCase findByFilterUseCase;
 
     @GetMapping("/{incomeId}")
     public ResponseEntity<TransactionDto> findById(@PathVariable UUID incomeId) {
         return ResponseEntity.status(HttpStatus.OK).body(TransactionDto.fromDomain(this.findTransactionByIdUseCase.execute(incomeId).orElseThrow(() -> new TransactionNotFoundException("Transaction not found"))));
     }
 
-    @GetMapping("/type/{type}/user/{userId}")
-    public ResponseEntity<List<TransactionDto>> findByType(@PathVariable TransactionType type, @PathVariable UUID userId) {
-        return ResponseEntity.status(HttpStatus.OK).body(this.findTransactionsByTypeUseCase.execute(type, userId).stream().map(TransactionDto::fromDomain).toList());
-    }
+    @GetMapping
+    public ResponseEntity<List<TransactionDto>> find(
+            @RequestParam UUID userId,
+            @RequestParam(required = false) TransactionType type,
+            @RequestParam(required = false) Month month
+    ) {
+        TransactionFilter filter = new TransactionFilter(
+                userId,
+                type,
+                month
+        );
 
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<TransactionDto>> findByUserId(@PathVariable UUID userId) {
-        return ResponseEntity.status(HttpStatus.OK).body(this.findAllTransactionsByUserIdUseCase.execute(userId).stream().map(TransactionDto::fromDomain).toList());
+        List<Transaction> transactions =
+                this.findByFilterUseCase.execute(filter);
+
+        return ResponseEntity.ok(
+                transactions.stream()
+                        .map(TransactionDto::fromDomain)
+                        .toList()
+        );
     }
 
     @PostMapping
@@ -51,7 +57,7 @@ public class TransactionController {
         return ResponseEntity.status(HttpStatus.CREATED).body(TransactionDto.fromDomain(this.saveTransactionUseCase.execute(transactionToSave)));
     }
 
-    private Transaction mapCreateDtoToDomain(CreateTransactionDto income){
+    private Transaction mapCreateDtoToDomain(CreateTransactionDto income) {
         return new Transaction(
                 null,
                 income.title(),

@@ -9,6 +9,7 @@ import com.nicky.controlBilling.domain.use_case.account.SaveAccountUseCase;
 import com.nicky.controlBilling.infrastructure.controller.dto.request.CreateAccountDto;
 import com.nicky.controlBilling.infrastructure.controller.dto.response.AccountResponse;
 import com.nicky.controlBilling.infrastructure.controller.dto.response.ApiResponse;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.http.HttpStatus;
@@ -61,7 +62,7 @@ public class AccountController {
     }
 
     @PostMapping
-    public ResponseEntity<@NonNull ApiResponse> saveAccount(@RequestBody CreateAccountDto account) {
+    public ResponseEntity<@NonNull ApiResponse> saveAccount(@Valid @RequestBody CreateAccountDto account) {
         return ResponseEntity.status(HttpStatus.CREATED).body(
                 new ApiResponse(
                         HttpStatus.OK.name(),

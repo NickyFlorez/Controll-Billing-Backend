@@ -7,6 +7,7 @@ import com.nicky.controlBilling.infrastructure.controller.dto.request.RegisterUs
 import com.nicky.controlBilling.infrastructure.controller.dto.response.ApiResponse;
 import com.nicky.controlBilling.infrastructure.controller.dto.response.TokenResponse;
 import com.nicky.controlBilling.infrastructure.controller.dto.response.UserResponse;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.http.HttpStatus;
@@ -26,7 +27,7 @@ public class UserController {
     private final LoginUserUseCase loginUserUseCase;
 
     @PostMapping("/register")
-    public ResponseEntity<@NonNull ApiResponse> registerUser(@RequestBody RegisterUserDto dto) {
+    public ResponseEntity<@NonNull ApiResponse> registerUser(@Valid @RequestBody RegisterUserDto dto) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(
@@ -40,7 +41,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<@NonNull ApiResponse> loginUser(@RequestBody LoginUserDto dto) {
+    public ResponseEntity<@NonNull ApiResponse> loginUser(@Valid @RequestBody LoginUserDto dto) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(

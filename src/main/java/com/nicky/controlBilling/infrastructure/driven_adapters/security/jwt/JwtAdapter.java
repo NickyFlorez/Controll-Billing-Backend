@@ -1,4 +1,4 @@
-package com.nicky.controlBilling.infrastructure.driven_adapters.jwt.adapter;
+package com.nicky.controlBilling.infrastructure.driven_adapters.security.jwt;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;

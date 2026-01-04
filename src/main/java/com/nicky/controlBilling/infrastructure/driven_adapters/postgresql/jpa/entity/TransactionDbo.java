@@ -1,9 +1,6 @@
 package com.nicky.controlBilling.infrastructure.driven_adapters.postgresql.jpa.entity;
 
-import com.nicky.controlBilling.domain.model.Transaction;
-import com.nicky.controlBilling.domain.model.Month;
-import com.nicky.controlBilling.domain.model.TransactionType;
-import com.nicky.controlBilling.domain.model.User;
+import com.nicky.controlBilling.domain.model.*;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -38,6 +35,10 @@ public class TransactionDbo {
     @JoinColumn(name = "user_id", nullable = false)
     private UserDbo user;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "account_id", nullable = false)
+    private AccountDbo account;
+
     public static TransactionDbo fromDomain(Transaction transaction) {
         return new TransactionDbo(
                 transaction.id(),
@@ -51,6 +52,15 @@ public class TransactionDbo {
                         null,
                         null,
                         null,
+                        null,
+                        new ArrayList<>(),
+                        new ArrayList<>()
+                ),
+                new AccountDbo(
+                        transaction.account().id(),
+                        transaction.account().bank(),
+                        transaction.account().logoUrl(),
+                        transaction.account().numberAccount(),
                         null,
                         new ArrayList<>()
                 )
@@ -70,6 +80,15 @@ public class TransactionDbo {
                         null,
                         null,
                         null,
+                        null,
+                        new ArrayList<>(),
+                        new ArrayList<>()
+                ),
+                new Account(
+                        getAccount().getId(),
+                        getAccount().getBank(),
+                        getAccount().getLogoUrl(),
+                        getAccount().getNumberAccount(),
                         null,
                         new ArrayList<>()
                 )

@@ -1,9 +1,6 @@
 package com.nicky.controlBilling.infrastructure.controller.dto;
 
-import com.nicky.controlBilling.domain.model.Transaction;
-import com.nicky.controlBilling.domain.model.Month;
-import com.nicky.controlBilling.domain.model.TransactionType;
-import com.nicky.controlBilling.domain.model.User;
+import com.nicky.controlBilling.domain.model.*;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -23,8 +20,9 @@ public class TransactionDto {
     private final Month month;
     private final TransactionType type;
     private final UserDto user;
+    private final AccountDto accountDto;
 
-    public static TransactionDto fromDomain(Transaction transaction){
+    public static TransactionDto fromDomain(Transaction transaction) {
         return new TransactionDto(
                 transaction.id(),
                 transaction.title(),
@@ -38,12 +36,21 @@ public class TransactionDto {
                         null,
                         null,
                         null,
+                        new ArrayList<>(),
+                        new ArrayList<>()
+                ),
+                new AccountDto(
+                        transaction.account().id(),
+                        transaction.account().bank(),
+                        transaction.account().logoUrl(),
+                        transaction.account().numberAccount(),
+                        null,
                         new ArrayList<>()
                 )
         );
     }
 
-    public Transaction toDomain(){
+    public Transaction toDomain() {
         return new Transaction(
                 getId(),
                 getTitle(),
@@ -56,6 +63,15 @@ public class TransactionDto {
                         null,
                         null,
                         null,
+                        null,
+                        new ArrayList<>(),
+                        new ArrayList<>()
+                ),
+                new Account(
+                        getAccountDto().getId(),
+                        getAccountDto().getBank(),
+                        getAccountDto().getLogoUrl(),
+                        getAccountDto().getNumberAccount(),
                         null,
                         new ArrayList<>()
                 )

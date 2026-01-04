@@ -2,8 +2,8 @@ package com.nicky.controlBilling.infrastructure.controller.user;
 
 import com.nicky.controlBilling.domain.use_case.user.LoginUserUseCase;
 import com.nicky.controlBilling.domain.use_case.user.RegisterUserUseCase;
-import com.nicky.controlBilling.infrastructure.controller.dto.LoginUserDto;
-import com.nicky.controlBilling.infrastructure.controller.dto.RegisterUserDto;
+import com.nicky.controlBilling.infrastructure.controller.dto.request.LoginUserDto;
+import com.nicky.controlBilling.infrastructure.controller.dto.request.RegisterUserDto;
 import com.nicky.controlBilling.infrastructure.controller.dto.UserDto;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;

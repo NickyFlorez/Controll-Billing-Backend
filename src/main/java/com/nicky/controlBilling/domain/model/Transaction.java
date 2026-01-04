@@ -10,6 +10,7 @@ public record Transaction(
         BigDecimal value,
         Month month,
         TransactionType type,
-        User user
+        User user,
+        Account account
 ) {
 }

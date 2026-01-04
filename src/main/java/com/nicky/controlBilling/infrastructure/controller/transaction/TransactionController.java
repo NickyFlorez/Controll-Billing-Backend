@@ -3,7 +3,7 @@ package com.nicky.controlBilling.infrastructure.controller.transaction;
 import com.nicky.controlBilling.domain.exceptions.TransactionNotFoundException;
 import com.nicky.controlBilling.domain.model.*;
 import com.nicky.controlBilling.domain.use_case.transaction.*;
-import com.nicky.controlBilling.infrastructure.controller.dto.CreateTransactionDto;
+import com.nicky.controlBilling.infrastructure.controller.dto.request.CreateTransactionDto;
 import com.nicky.controlBilling.infrastructure.controller.dto.TransactionDto;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
@@ -68,6 +68,15 @@ public class TransactionController {
                 income.type(),
                 new User(
                         income.userId(),
+                        null,
+                        null,
+                        null,
+                        null,
+                        new ArrayList<>(),
+                        new ArrayList<>()
+                ),
+                new Account(
+                        income.accountId(),
                         null,
                         null,
                         null,

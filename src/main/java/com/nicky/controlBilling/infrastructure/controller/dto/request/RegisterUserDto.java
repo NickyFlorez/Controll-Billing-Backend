@@ -1,4 +1,4 @@
-package com.nicky.controlBilling.infrastructure.controller.dto;
+package com.nicky.controlBilling.infrastructure.controller.dto.request;
 
 import com.nicky.controlBilling.domain.model.Role;
 

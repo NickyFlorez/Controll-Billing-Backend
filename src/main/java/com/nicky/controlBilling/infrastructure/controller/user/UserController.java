@@ -4,8 +4,11 @@ import com.nicky.controlBilling.domain.use_case.user.LoginUserUseCase;
 import com.nicky.controlBilling.domain.use_case.user.RegisterUserUseCase;
 import com.nicky.controlBilling.infrastructure.controller.dto.request.LoginUserDto;
 import com.nicky.controlBilling.infrastructure.controller.dto.request.RegisterUserDto;
-import com.nicky.controlBilling.infrastructure.controller.dto.UserDto;
+import com.nicky.controlBilling.infrastructure.controller.dto.response.ApiResponse;
+import com.nicky.controlBilling.infrastructure.controller.dto.response.TokenResponse;
+import com.nicky.controlBilling.infrastructure.controller.dto.response.UserResponse;
 import lombok.AllArgsConstructor;
+import lombok.NonNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,18 +26,32 @@ public class UserController {
     private final LoginUserUseCase loginUserUseCase;
 
     @PostMapping("/register")
-    public ResponseEntity<UserDto> registerUser(@RequestBody RegisterUserDto dto) {
+    public ResponseEntity<@NonNull ApiResponse> registerUser(@RequestBody RegisterUserDto dto) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(UserDto.fromDomain(this.registerUserUseCase.execute(dto.fullName(), dto.email(), dto.password(), dto.role())));
+                .body(
+                        new ApiResponse(
+                                HttpStatus.CREATED.name(),
+                                UserResponse.toResponse(this.registerUserUseCase.execute(dto.fullName(), dto.email(), dto.password(), dto.role())),
+                                "Register user"
+                        )
+                );
 
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> loginUser(@RequestBody LoginUserDto dto) {
+    public ResponseEntity<@NonNull ApiResponse> loginUser(@RequestBody LoginUserDto dto) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(this.loginUserUseCase.execute(dto.email(), dto.password()));
+                .body(
+                        new ApiResponse(
+                                HttpStatus.OK.name(),
+                                new TokenResponse(
+                                        this.loginUserUseCase.execute(dto.email(), dto.password())
+                                ),
+                                "Login user"
+                        )
+                );
 
     }
 }

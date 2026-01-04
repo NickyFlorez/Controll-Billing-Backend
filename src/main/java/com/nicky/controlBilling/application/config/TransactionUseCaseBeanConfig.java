@@ -1,6 +1,9 @@
 package com.nicky.controlBilling.application.config;
 
-import com.nicky.controlBilling.domain.use_case.transaction.*;
+import com.nicky.controlBilling.domain.use_case.transaction.FindByFilterUseCase;
+import com.nicky.controlBilling.domain.use_case.transaction.FindTransactionByIdUseCase;
+import com.nicky.controlBilling.domain.use_case.transaction.SaveTransactionUseCase;
+import com.nicky.controlBilling.infrastructure.driven_adapters.postgresql.jpa.adapter.AccountRepositoryAdapter;
 import com.nicky.controlBilling.infrastructure.driven_adapters.postgresql.jpa.adapter.TransactionRepositoryAdapter;
 import com.nicky.controlBilling.infrastructure.driven_adapters.postgresql.jpa.adapter.UserRepositoryAdapter;
 import org.springframework.context.annotation.Bean;
@@ -14,8 +17,9 @@ public class TransactionUseCaseBeanConfig {
     }
 
     @Bean
-    SaveTransactionUseCase saveTransactionUseCase(TransactionRepositoryAdapter transactionRepositoryAdapter, UserRepositoryAdapter userRepositoryAdapter){
-        return new SaveTransactionUseCase(transactionRepositoryAdapter, userRepositoryAdapter);
+    SaveTransactionUseCase saveTransactionUseCase(TransactionRepositoryAdapter transactionRepositoryAdapter,
+                                                  UserRepositoryAdapter userRepositoryAdapter, AccountRepositoryAdapter accountRepositoryAdapter) {
+        return new SaveTransactionUseCase(transactionRepositoryAdapter, userRepositoryAdapter, accountRepositoryAdapter);
     }
 
     @Bean
